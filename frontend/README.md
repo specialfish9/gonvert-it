@@ -1,4 +1,4 @@
-# web-ui
+# fronted
 
 A new Flutter project.
 

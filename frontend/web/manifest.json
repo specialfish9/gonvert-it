@@ -1,6 +1,6 @@
 {
-    "name": "web-ui",
-    "short_name": "web-ui",
+    "name": "fronted",
+    "short_name": "fronted",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
