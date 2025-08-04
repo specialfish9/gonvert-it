@@ -2,7 +2,7 @@ name: Build Docker Image
 
 env:
   BE_DOCKER_IMAGE: goconvert-it-backend
-  #FE_DOCKER_IMAGE: spiderfront
+  FE_DOCKER_IMAGE: goconvert-it-frontend
   DOCKER_USER: specialfish9
   DOCKER_USERNAME: specialfish9
   DOCKER_PWD: ${{ secrets.DOCKER_PWD }}
@@ -23,11 +23,26 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-    - name: docker login
-      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PWD
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ env.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PWD }}
 
-    - name: Build and push Docker backend image
-      run: docker build --push -t ${{ env.DOCKER_USER }}/${{ env.BE_DOCKER_IMAGE }}:latest -t ${{ env.DOCKER_USER }}/${{ env.BE_DOCKER_IMAGE }}:${{ steps.date.outputs.date }} backend
+    - name: Build and push Docker image Backend
+      uses: docker/build-push-action@v5
+      with:
+        context: backend
+        push: true
+        tags: |
+          ${{ env.DOCKER_USER }}/${{ env.BE_DOCKER_IMAGE }}:latest
+          ${{ env.DOCKER_USER }}/${{ env.BE_DOCKER_IMAGE }}:${{ steps.date.outputs.date }} 
 
-    # - name: Build and push Docker frontend image
-    #   run: docker build --push -t ${{ env.DOCKER_USER }}/${{ env.FE_DOCKER_IMAGE }}:latest -t ${{ env.DOCKER_USER }}/${{ env.FE_DOCKER_IMAGE }}:${{ steps.date.outputs.date }} frontend
+    - name: Build and push Docker image Frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: frontend
+        push: true
+        tags: |
+          ${{ env.DOCKER_USER }}/${{ env.FE_DOCKER_IMAGE }}:latest
+          ${{ env.DOCKER_USER }}/${{ env.FE_DOCKER_IMAGE }}:${{ steps.date.outputs.date }} 
