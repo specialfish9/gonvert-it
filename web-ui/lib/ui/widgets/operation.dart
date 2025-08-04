@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' hide Card, Colors, Theme;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:webui/repository/operation.dart';
 
@@ -14,6 +13,7 @@ class Operation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Card(
       child: Row(
         children: [
@@ -22,7 +22,7 @@ class Operation extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.zinc[800],
               border: Border.all(color: Colors.zinc[700]!),
-              borderRadius: Theme.of(context).borderRadiusMd,
+              borderRadius: theme.borderRadiusMd,
             ),
             child: _matchIcon(op.code),
           ),
@@ -31,8 +31,11 @@ class Operation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(op.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(op.description, style: TextStyle(fontSize: 16)),
+              Text(
+                op.name,
+                style: theme.typography.medium,
+              ),
+              Text(op.description, style: theme.typography.small),
             ],
           ),
         ],
