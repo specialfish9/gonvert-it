@@ -14,13 +14,9 @@ class JsonOperation {
   /// Details of what the operation does, used for display purposes.
   final String description;
 
-  /// Optional category code for grouping operations.
-  final String? categoryCode;
-
   const JsonOperation({
     required this.name,
     required this.code,
     required this.description,
-    this.categoryCode,
   });
 }

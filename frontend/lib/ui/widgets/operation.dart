@@ -1,5 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:webui/repository/models/operation.dart';
+import 'package:frontend/repository/models/json_operation.dart';
 
 class Operation extends StatelessWidget {
   final JsonOperation op;

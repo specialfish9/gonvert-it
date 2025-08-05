@@ -1,24 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'rest_client.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-Task _$TaskFromJson(Map<String, dynamic> json) => Task(
-  id: json['id'] as String?,
-  name: json['name'] as String?,
-  avatar: json['avatar'] as String?,
-  createdAt: json['createdAt'] as String?,
-);
-
-Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
-  'id': instance.id,
-  'name': instance.name,
-  'avatar': instance.avatar,
-  'createdAt': instance.createdAt,
-};
+part of 'pdf_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -26,8 +8,8 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl, this.errorLogger}) {
+class _PdfRepository implements PdfRepository {
+  _PdfRepository(this._dio, {this.baseUrl, this.errorLogger}) {
     baseUrl ??= 'https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/';
   }
 
@@ -38,27 +20,41 @@ class _RestClient implements RestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<Task>> getTasks() async {
+  Future<List<int>> split(File file) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Task>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = FormData();
+    _data.files.add(
+      MapEntry(
+        'file',
+        MultipartFile.fromFileSync(
+          file.path,
+          filename: file.path.split(Platform.pathSeparator).last,
+          contentType: DioMediaType.parse('application/pdf'),
+        ),
+      ),
+    );
+    final _options = _setStreamType<List<int>>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+            responseType: ResponseType.bytes,
+          )
           .compose(
             _dio.options,
-            '/tasks',
+            '/pdf/split',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Task> _value;
+    late List<int> _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Task.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!.cast<int>();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
