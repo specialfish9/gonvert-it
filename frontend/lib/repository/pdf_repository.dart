@@ -19,6 +19,11 @@ abstract class PdfRepository {
   @MultiPart()
   @DioResponseType(ResponseType.bytes)
   Future<List<int>> split(@pdfPart File file);
+
+  @POST('/pdf/merge')
+  @MultiPart()
+  @DioResponseType(ResponseType.bytes)
+  Future<List<int>> merge(@pdfPart File file);
 }
 
 extension PdfRepositoryExt on PdfRepository {
