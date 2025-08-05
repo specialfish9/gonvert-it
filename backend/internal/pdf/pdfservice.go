@@ -12,6 +12,7 @@ import (
 
 type Service interface {
 	Split(ctx context.Context, file multipart.File, fileName string, w io.Writer) error
+	Merge(ctx context.Context, files []io.ReadSeeker, w io.Writer) error
 }
 
 type serviceImpl struct {
@@ -31,7 +32,7 @@ func (s *serviceImpl) Split(ctx context.Context, file multipart.File, fileName s
 	defer zipWriter.Close()
 
 	for i, file := range spans {
-		err := addFileToZip(zipWriter, file, fmt.Sprintf("%s-%d.pdf", fileName, i+1))
+		err := addFileToZip(zipWriter, file.Reader, fmt.Sprintf("%s-%d.pdf", fileName, i+1))
 		if err != nil {
 			return fmt.Errorf("pdf: failed to add file to zip: %w", err)
 		}
@@ -40,9 +41,9 @@ func (s *serviceImpl) Split(ctx context.Context, file multipart.File, fileName s
 	return nil
 }
 
-func addFileToZip(zipWriter *zip.Writer, span *api.PageSpan, spanName string) error {
+func addFileToZip(zipWriter *zip.Writer, file io.Reader, fileName string) error {
 	header := &zip.FileHeader{
-		Name:   spanName,
+		Name:   fileName,
 		Method: zip.Deflate, // Compression method
 	}
 
@@ -51,6 +52,14 @@ func addFileToZip(zipWriter *zip.Writer, span *api.PageSpan, spanName string) er
 		return err
 	}
 
-	_, err = io.Copy(writer, span.Reader)
+	_, err = io.Copy(writer, file)
 	return err
+}
+
+func (s *serviceImpl) Merge(ctx context.Context, files []io.ReadSeeker, w io.Writer) error {
+	if err := api.MergeRaw(files, w, false, nil); err != nil {
+		return fmt.Errorf("pdf: failed to merge PDF files: %w", err)
+	}
+
+	return nil
 }

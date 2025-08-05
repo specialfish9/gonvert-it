@@ -16,7 +16,9 @@ func Init(cfg *config.Config, registry *registry.Registry) {
 
 	r.Use(middleware.Logger)
 
-	routes.InitPdfRouter(r, registry)
+	r.Route("/api/v1", func(r chi.Router) {
+		routes.InitPdfRouter(r, registry)
+	})
 
 	slog.Info("Server running on port " + cfg.Port + "...")
 	http.ListenAndServe(":"+cfg.Port, r)
