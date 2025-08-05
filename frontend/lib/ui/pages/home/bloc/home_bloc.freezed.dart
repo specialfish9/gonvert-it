@@ -55,11 +55,12 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,TResult Function( _SearchChanged value)?  searchChanged,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init(_that);case _:
+return init(_that);case _SearchChanged() when searchChanged != null:
+return searchChanged(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,required TResult Function( _SearchChanged value)  searchChanged,}){
 final _that = this;
 switch (_that) {
 case _Init():
-return init(_that);case _:
+return init(_that);case _SearchChanged():
+return searchChanged(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,TResult? Function( _SearchChanged value)?  searchChanged,}){
 final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init(_that);case _:
+return init(_that);case _SearchChanged() when searchChanged != null:
+return searchChanged(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function()?  searchChanged,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init();case _:
+return init();case _SearchChanged() when searchChanged != null:
+return searchChanged();case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return init();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function()  searchChanged,}) {final _that = this;
 switch (_that) {
 case _Init():
-return init();case _:
+return init();case _SearchChanged():
+return searchChanged();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return init();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function()?  searchChanged,}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init();case _:
+return init();case _SearchChanged() when searchChanged != null:
+return searchChanged();case _:
   return null;
 
 }
@@ -204,9 +210,41 @@ String toString() {
 
 
 /// @nodoc
+
+
+class _SearchChanged implements HomeEvent {
+  const _SearchChanged();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchChanged);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'HomeEvent.searchChanged()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
 mixin _$HomeState {
 
- List<JsonOperation>? get operations;
+ List<JsonOperation>? get operations; List<JsonOperation>? get filteredOperations; TextEditingController get searchController;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -217,16 +255,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&const DeepCollectionEquality().equals(other.operations, operations));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&const DeepCollectionEquality().equals(other.operations, operations)&&const DeepCollectionEquality().equals(other.filteredOperations, filteredOperations)&&(identical(other.searchController, searchController) || other.searchController == searchController));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(operations));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(operations),const DeepCollectionEquality().hash(filteredOperations),searchController);
 
 @override
 String toString() {
-  return 'HomeState(operations: $operations)';
+  return 'HomeState(operations: $operations, filteredOperations: $filteredOperations, searchController: $searchController)';
 }
 
 
@@ -237,7 +275,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- List<JsonOperation>? operations
+ List<JsonOperation>? operations, List<JsonOperation>? filteredOperations, TextEditingController searchController
 });
 
 
@@ -254,10 +292,12 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? operations = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? operations = freezed,Object? filteredOperations = freezed,Object? searchController = null,}) {
   return _then(_self.copyWith(
 operations: freezed == operations ? _self.operations : operations // ignore: cast_nullable_to_non_nullable
-as List<JsonOperation>?,
+as List<JsonOperation>?,filteredOperations: freezed == filteredOperations ? _self.filteredOperations : filteredOperations // ignore: cast_nullable_to_non_nullable
+as List<JsonOperation>?,searchController: null == searchController ? _self.searchController : searchController // ignore: cast_nullable_to_non_nullable
+as TextEditingController,
   ));
 }
 
@@ -342,10 +382,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<JsonOperation>? operations)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<JsonOperation>? operations,  List<JsonOperation>? filteredOperations,  TextEditingController searchController)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.operations);case _:
+return $default(_that.operations,_that.filteredOperations,_that.searchController);case _:
   return orElse();
 
 }
@@ -363,10 +403,10 @@ return $default(_that.operations);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<JsonOperation>? operations)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<JsonOperation>? operations,  List<JsonOperation>? filteredOperations,  TextEditingController searchController)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.operations);case _:
+return $default(_that.operations,_that.filteredOperations,_that.searchController);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -383,10 +423,10 @@ return $default(_that.operations);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<JsonOperation>? operations)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<JsonOperation>? operations,  List<JsonOperation>? filteredOperations,  TextEditingController searchController)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.operations);case _:
+return $default(_that.operations,_that.filteredOperations,_that.searchController);case _:
   return null;
 
 }
@@ -398,7 +438,7 @@ return $default(_that.operations);case _:
 
 
 class _HomeState implements HomeState {
-  const _HomeState({final  List<JsonOperation>? operations}): _operations = operations;
+  const _HomeState({final  List<JsonOperation>? operations, final  List<JsonOperation>? filteredOperations, required this.searchController}): _operations = operations,_filteredOperations = filteredOperations;
   
 
  final  List<JsonOperation>? _operations;
@@ -410,6 +450,16 @@ class _HomeState implements HomeState {
   return EqualUnmodifiableListView(value);
 }
 
+ final  List<JsonOperation>? _filteredOperations;
+@override List<JsonOperation>? get filteredOperations {
+  final value = _filteredOperations;
+  if (value == null) return null;
+  if (_filteredOperations is EqualUnmodifiableListView) return _filteredOperations;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override final  TextEditingController searchController;
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -421,16 +471,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&const DeepCollectionEquality().equals(other._operations, _operations));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&const DeepCollectionEquality().equals(other._operations, _operations)&&const DeepCollectionEquality().equals(other._filteredOperations, _filteredOperations)&&(identical(other.searchController, searchController) || other.searchController == searchController));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_operations));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_operations),const DeepCollectionEquality().hash(_filteredOperations),searchController);
 
 @override
 String toString() {
-  return 'HomeState(operations: $operations)';
+  return 'HomeState(operations: $operations, filteredOperations: $filteredOperations, searchController: $searchController)';
 }
 
 
@@ -441,7 +491,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<JsonOperation>? operations
+ List<JsonOperation>? operations, List<JsonOperation>? filteredOperations, TextEditingController searchController
 });
 
 
@@ -458,10 +508,12 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? operations = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? operations = freezed,Object? filteredOperations = freezed,Object? searchController = null,}) {
   return _then(_HomeState(
 operations: freezed == operations ? _self._operations : operations // ignore: cast_nullable_to_non_nullable
-as List<JsonOperation>?,
+as List<JsonOperation>?,filteredOperations: freezed == filteredOperations ? _self._filteredOperations : filteredOperations // ignore: cast_nullable_to_non_nullable
+as List<JsonOperation>?,searchController: null == searchController ? _self.searchController : searchController // ignore: cast_nullable_to_non_nullable
+as TextEditingController,
   ));
 }
 

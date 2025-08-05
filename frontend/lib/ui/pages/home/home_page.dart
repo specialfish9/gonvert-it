@@ -24,8 +24,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (final prev, final curr) => !const DeepCollectionEquality()
-          .equals(prev.operations, curr.operations),
+      buildWhen: (final prev, final curr) {
+        return !const DeepCollectionEquality().equals(
+              prev.operations,
+              curr.operations,
+            ) ||
+            prev.filteredOperations != curr.filteredOperations;
+      },
       builder: (context, state) {
         if (state.operations == null) {
           return const Center(child: CircularProgressIndicator());
@@ -38,24 +43,30 @@ class HomePage extends StatelessWidget {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(_padding),
-                  child: SearchBar(),
+                  child: SearchBar(controller: state.searchController),
                 ),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: _padding),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 400, // Maximum width per card
-                    mainAxisSpacing: _padding,
-                    crossAxisSpacing: _padding,
-                    mainAxisExtent: 80, // Fixed height for each card
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => Operation(op: state.operations![index]),
-                    childCount: state.operations!.length,
-                  ),
-                ),
-              ),
+
+              state.filteredOperations == null ||
+                      state.filteredOperations!.isNotEmpty
+                  ? SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: _padding),
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 400, // Maximum width per card
+                              mainAxisSpacing: _padding,
+                              crossAxisSpacing: _padding,
+                              mainAxisExtent: 80, // Fixed height for each card
+                            ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) =>
+                              Operation(op: state.filteredOperations![index]),
+                          childCount: state.filteredOperations!.length,
+                        ),
+                      ),
+                    )
+                  : SliverToBoxAdapter(child: Text('No operation found')),
             ],
           ),
         );

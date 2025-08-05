@@ -1,14 +1,17 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
+  final TextEditingController controller;
+  const SearchBar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-        placeholder: const Text('Search operations...'),
-        features: [
-          InputFeature.leading(StatedWidget.builder(
+      placeholder: const Text('Search operations...'),
+      controller: controller,
+      features: [
+        InputFeature.leading(
+          StatedWidget.builder(
             builder: (context, states) {
               if (states.hovered) {
                 return const Icon(Icons.search);
@@ -16,13 +19,16 @@ class SearchBar extends StatelessWidget {
                 return const Icon(Icons.search).iconMutedForeground();
               }
             },
-          ), visibility: InputFeatureVisibility.textEmpty),
-          InputFeature.clear(
-            visibility: (InputFeatureVisibility.textNotEmpty &
-            InputFeatureVisibility.focused) |
-            InputFeatureVisibility.hovered,
           ),
-        ]);
+          visibility: InputFeatureVisibility.textEmpty,
+        ),
+        InputFeature.clear(
+          visibility:
+              (InputFeatureVisibility.textNotEmpty &
+                  InputFeatureVisibility.focused) |
+              InputFeatureVisibility.hovered,
+        ),
+      ],
+    );
   }
-
 }
