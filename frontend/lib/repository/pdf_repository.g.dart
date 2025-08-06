@@ -10,7 +10,7 @@ part of 'pdf_repository.dart';
 
 class _PdfRepository implements PdfRepository {
   _PdfRepository(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/';
+    baseUrl ??= 'http://127.0.0.1:8081/api/v1/pdf';
   }
 
   final Dio _dio;
@@ -45,7 +45,7 @@ class _PdfRepository implements PdfRepository {
           )
           .compose(
             _dio.options,
-            '/pdf/split',
+            '/split',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -88,7 +88,7 @@ class _PdfRepository implements PdfRepository {
           )
           .compose(
             _dio.options,
-            '/pdf/merge',
+            '/merge',
             queryParameters: queryParameters,
             data: _data,
           )

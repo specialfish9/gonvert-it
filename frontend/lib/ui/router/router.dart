@@ -3,6 +3,9 @@ import 'package:frontend/ui/pages/home/home_page.dart';
 import 'package:injectable/injectable.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../repository/models/json_operation.dart';
+import '../pages/home/pages/split/split_page.dart';
+
 @singleton
 class AppRouter extends GoRouter {
   static String buildLocation(
@@ -29,6 +32,8 @@ class AppRouter extends GoRouter {
         ),
         initialLocation: HomeRoute.buildLocation(),
       );
+
+  void pushOperationRoute(JsonOperation op) => push(op.route);
 }
 
 class _RoutingConfigProvider extends ValueListenable<RoutingConfig> {

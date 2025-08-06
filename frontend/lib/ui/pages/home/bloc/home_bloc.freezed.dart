@@ -55,12 +55,13 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,TResult Function( _SearchChanged value)?  searchChanged,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,TResult Function( _SearchChanged value)?  searchChanged,TResult Function( _OperationSelected value)?  operationSelected,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Init() when init != null:
 return init(_that);case _SearchChanged() when searchChanged != null:
-return searchChanged(_that);case _:
+return searchChanged(_that);case _OperationSelected() when operationSelected != null:
+return operationSelected(_that);case _:
   return orElse();
 
 }
@@ -78,12 +79,13 @@ return searchChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,required TResult Function( _SearchChanged value)  searchChanged,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,required TResult Function( _SearchChanged value)  searchChanged,required TResult Function( _OperationSelected value)  operationSelected,}){
 final _that = this;
 switch (_that) {
 case _Init():
 return init(_that);case _SearchChanged():
-return searchChanged(_that);case _:
+return searchChanged(_that);case _OperationSelected():
+return operationSelected(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -100,12 +102,13 @@ return searchChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,TResult? Function( _SearchChanged value)?  searchChanged,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,TResult? Function( _SearchChanged value)?  searchChanged,TResult? Function( _OperationSelected value)?  operationSelected,}){
 final _that = this;
 switch (_that) {
 case _Init() when init != null:
 return init(_that);case _SearchChanged() when searchChanged != null:
-return searchChanged(_that);case _:
+return searchChanged(_that);case _OperationSelected() when operationSelected != null:
+return operationSelected(_that);case _:
   return null;
 
 }
@@ -122,11 +125,12 @@ return searchChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function()?  searchChanged,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function()?  searchChanged,TResult Function( JsonOperation operation)?  operationSelected,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
 return init();case _SearchChanged() when searchChanged != null:
-return searchChanged();case _:
+return searchChanged();case _OperationSelected() when operationSelected != null:
+return operationSelected(_that.operation);case _:
   return orElse();
 
 }
@@ -144,11 +148,12 @@ return searchChanged();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function()  searchChanged,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function()  searchChanged,required TResult Function( JsonOperation operation)  operationSelected,}) {final _that = this;
 switch (_that) {
 case _Init():
 return init();case _SearchChanged():
-return searchChanged();case _:
+return searchChanged();case _OperationSelected():
+return operationSelected(_that.operation);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +170,12 @@ return searchChanged();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function()?  searchChanged,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function()?  searchChanged,TResult? Function( JsonOperation operation)?  operationSelected,}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
 return init();case _SearchChanged() when searchChanged != null:
-return searchChanged();case _:
+return searchChanged();case _OperationSelected() when operationSelected != null:
+return operationSelected(_that.operation);case _:
   return null;
 
 }
@@ -240,6 +246,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _OperationSelected implements HomeEvent {
+  const _OperationSelected(this.operation);
+  
+
+ final  JsonOperation operation;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$OperationSelectedCopyWith<_OperationSelected> get copyWith => __$OperationSelectedCopyWithImpl<_OperationSelected>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OperationSelected&&(identical(other.operation, operation) || other.operation == operation));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,operation);
+
+@override
+String toString() {
+  return 'HomeEvent.operationSelected(operation: $operation)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$OperationSelectedCopyWith<$Res> implements $HomeEventCopyWith<$Res> {
+  factory _$OperationSelectedCopyWith(_OperationSelected value, $Res Function(_OperationSelected) _then) = __$OperationSelectedCopyWithImpl;
+@useResult
+$Res call({
+ JsonOperation operation
+});
+
+
+
+
+}
+/// @nodoc
+class __$OperationSelectedCopyWithImpl<$Res>
+    implements _$OperationSelectedCopyWith<$Res> {
+  __$OperationSelectedCopyWithImpl(this._self, this._then);
+
+  final _OperationSelected _self;
+  final $Res Function(_OperationSelected) _then;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? operation = null,}) {
+  return _then(_OperationSelected(
+null == operation ? _self.operation : operation // ignore: cast_nullable_to_non_nullable
+as JsonOperation,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$HomeState {

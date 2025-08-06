@@ -5,6 +5,7 @@ import 'package:frontend/repository/models/json_operation.dart';
 import 'package:frontend/repository/pdf_repository.dart';
 import 'package:injectable/injectable.dart';
 import '../../../bloc_utils.dart';
+import '../../../router/router.dart';
 
 part 'home_event.dart';
 
@@ -14,11 +15,13 @@ part 'home_bloc.freezed.dart';
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final AppRouter _router;
   final PdfRepository _pdfRepository;
 
-  HomeBloc(this._pdfRepository) : super(HomeState.initial()) {
+  HomeBloc(this._router, this._pdfRepository) : super(HomeState.initial()) {
     dropOn<_Init>(_init);
     debounceOn<_SearchChanged>(_searchChanged);
+    dropOn<_OperationSelected>(_operationSelected);
 
     state.searchController.addListener(() => add(_SearchChanged()));
     add(_Init());
@@ -41,4 +44,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         [];
     emit(state.copyWith(filteredOperations: ops));
   }
+
+  void _operationSelected(_OperationSelected event, emit) =>
+      _router.pushOperationRoute(event.operation);
 }

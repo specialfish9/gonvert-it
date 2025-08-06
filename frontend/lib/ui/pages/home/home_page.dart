@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/ui/pages/home/bloc/home_bloc.dart';
+import 'package:frontend/ui/pages/home/pages/split/split_page.dart';
 import 'package:frontend/ui/router/base_route.dart';
 import 'package:frontend/ui/router/injected_builder.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -13,7 +14,11 @@ class HomeRoute extends BaseRoute {
   static String buildLocation() => _path;
 
   HomeRoute()
-    : super(path: _path, builder: injectedBuilder<HomeBloc>(const HomePage()));
+    : super(
+        path: _path,
+        builder: injectedBuilder<HomeBloc>(const HomePage()),
+        routes: [SplitRoute()],
+      );
 }
 
 class HomePage extends StatelessWidget {
@@ -23,6 +28,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<HomeBloc>();
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (final prev, final curr) {
         return !const DeepCollectionEquality().equals(
@@ -59,11 +65,14 @@ class HomePage extends StatelessWidget {
                               crossAxisSpacing: _padding,
                               mainAxisExtent: 80, // Fixed height for each card
                             ),
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) =>
-                              OperationTile(op: state.filteredOperations![index]),
-                          childCount: state.filteredOperations!.length,
-                        ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final op = state.filteredOperations![index];
+                          return OperationTile(
+                            op: op,
+                            onTap: () =>
+                                bloc.add(HomeEvent.operationSelected(op)),
+                          );
+                        }, childCount: state.filteredOperations!.length),
                       ),
                     )
                   : SliverToBoxAdapter(child: Text('No operation found')),
