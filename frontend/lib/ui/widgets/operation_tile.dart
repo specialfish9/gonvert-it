@@ -1,10 +1,10 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:frontend/repository/models/json_operation.dart';
 
-class Operation extends StatelessWidget {
+class OperationTile extends StatelessWidget {
   final JsonOperation op;
 
-  const Operation({super.key, required this.op});
+  const OperationTile({super.key, required this.op});
 
   Widget _matchIcon(JsonOperationCode code) => switch (code) {
     JsonOperationCode.merge => const Icon(LucideIcons.merge),

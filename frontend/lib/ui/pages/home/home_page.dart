@@ -4,7 +4,7 @@ import 'package:frontend/ui/pages/home/bloc/home_bloc.dart';
 import 'package:frontend/ui/router/base_route.dart';
 import 'package:frontend/ui/router/injected_builder.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:frontend/ui/widgets/operation.dart';
+import 'package:frontend/ui/widgets/operation_tile.dart';
 import 'package:frontend/ui/widgets/search_bar.dart';
 
 class HomeRoute extends BaseRoute {
@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
                             ),
                         delegate: SliverChildBuilderDelegate(
                           (context, index) =>
-                              Operation(op: state.filteredOperations![index]),
+                              OperationTile(op: state.filteredOperations![index]),
                           childCount: state.filteredOperations!.length,
                         ),
                       ),
