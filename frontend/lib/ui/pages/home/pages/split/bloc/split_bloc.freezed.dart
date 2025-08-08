@@ -55,12 +55,13 @@ extension SplitEventPatterns on SplitEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _FileDropped value)?  fileDropped,TResult Function( _DropAreaTapped value)?  dropAreaTapped,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _FileDropped value)?  fileDropped,TResult Function( _DropAreaTapped value)?  dropAreaTapped,TResult Function( _OnSubmit value)?  onSubmit,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _FileDropped() when fileDropped != null:
 return fileDropped(_that);case _DropAreaTapped() when dropAreaTapped != null:
-return dropAreaTapped(_that);case _:
+return dropAreaTapped(_that);case _OnSubmit() when onSubmit != null:
+return onSubmit(_that);case _:
   return orElse();
 
 }
@@ -78,12 +79,13 @@ return dropAreaTapped(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _FileDropped value)  fileDropped,required TResult Function( _DropAreaTapped value)  dropAreaTapped,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _FileDropped value)  fileDropped,required TResult Function( _DropAreaTapped value)  dropAreaTapped,required TResult Function( _OnSubmit value)  onSubmit,}){
 final _that = this;
 switch (_that) {
 case _FileDropped():
 return fileDropped(_that);case _DropAreaTapped():
-return dropAreaTapped(_that);case _:
+return dropAreaTapped(_that);case _OnSubmit():
+return onSubmit(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -100,12 +102,13 @@ return dropAreaTapped(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _FileDropped value)?  fileDropped,TResult? Function( _DropAreaTapped value)?  dropAreaTapped,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _FileDropped value)?  fileDropped,TResult? Function( _DropAreaTapped value)?  dropAreaTapped,TResult? Function( _OnSubmit value)?  onSubmit,}){
 final _that = this;
 switch (_that) {
 case _FileDropped() when fileDropped != null:
 return fileDropped(_that);case _DropAreaTapped() when dropAreaTapped != null:
-return dropAreaTapped(_that);case _:
+return dropAreaTapped(_that);case _OnSubmit() when onSubmit != null:
+return onSubmit(_that);case _:
   return null;
 
 }
@@ -122,11 +125,12 @@ return dropAreaTapped(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( DropItem dropItem)?  fileDropped,TResult Function()?  dropAreaTapped,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( DropItem dropItem)?  fileDropped,TResult Function()?  dropAreaTapped,TResult Function()?  onSubmit,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FileDropped() when fileDropped != null:
 return fileDropped(_that.dropItem);case _DropAreaTapped() when dropAreaTapped != null:
-return dropAreaTapped();case _:
+return dropAreaTapped();case _OnSubmit() when onSubmit != null:
+return onSubmit();case _:
   return orElse();
 
 }
@@ -144,11 +148,12 @@ return dropAreaTapped();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( DropItem dropItem)  fileDropped,required TResult Function()  dropAreaTapped,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( DropItem dropItem)  fileDropped,required TResult Function()  dropAreaTapped,required TResult Function()  onSubmit,}) {final _that = this;
 switch (_that) {
 case _FileDropped():
 return fileDropped(_that.dropItem);case _DropAreaTapped():
-return dropAreaTapped();case _:
+return dropAreaTapped();case _OnSubmit():
+return onSubmit();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +170,12 @@ return dropAreaTapped();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( DropItem dropItem)?  fileDropped,TResult? Function()?  dropAreaTapped,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( DropItem dropItem)?  fileDropped,TResult? Function()?  dropAreaTapped,TResult? Function()?  onSubmit,}) {final _that = this;
 switch (_that) {
 case _FileDropped() when fileDropped != null:
 return fileDropped(_that.dropItem);case _DropAreaTapped() when dropAreaTapped != null:
-return dropAreaTapped();case _:
+return dropAreaTapped();case _OnSubmit() when onSubmit != null:
+return onSubmit();case _:
   return null;
 
 }
@@ -276,7 +282,12 @@ String toString() {
 
 
 /// @nodoc
-mixin _$SplitState {
+
+
+class _OnSubmit implements SplitEvent {
+  const _OnSubmit();
+  
+
 
 
 
@@ -284,7 +295,7 @@ mixin _$SplitState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplitState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSubmit);
 }
 
 
@@ -293,15 +304,76 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplitState()';
+  return 'SplitEvent.onSubmit()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+mixin _$SplitState {
+
+ File? get file; bool get isLoading; bool get isCompleted; String? get error;
+/// Create a copy of SplitState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SplitStateCopyWith<SplitState> get copyWith => _$SplitStateCopyWithImpl<SplitState>(this as SplitState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplitState&&(identical(other.file, file) || other.file == file)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted)&&(identical(other.error, error) || other.error == error));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,file,isLoading,isCompleted,error);
+
+@override
+String toString() {
+  return 'SplitState(file: $file, isLoading: $isLoading, isCompleted: $isCompleted, error: $error)';
 }
 
 
 }
 
 /// @nodoc
-class $SplitStateCopyWith<$Res>  {
-$SplitStateCopyWith(SplitState _, $Res Function(SplitState) __);
+abstract mixin class $SplitStateCopyWith<$Res>  {
+  factory $SplitStateCopyWith(SplitState value, $Res Function(SplitState) _then) = _$SplitStateCopyWithImpl;
+@useResult
+$Res call({
+ File? file, bool isLoading, bool isCompleted, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class _$SplitStateCopyWithImpl<$Res>
+    implements $SplitStateCopyWith<$Res> {
+  _$SplitStateCopyWithImpl(this._self, this._then);
+
+  final SplitState _self;
+  final $Res Function(SplitState) _then;
+
+/// Create a copy of SplitState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? file = freezed,Object? isLoading = null,Object? isCompleted = null,Object? error = freezed,}) {
+  return _then(_self.copyWith(
+file: freezed == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as File?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
 }
 
 
@@ -383,10 +455,10 @@ return initial(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( File? file,  bool isLoading,  bool isCompleted,  String? error)?  initial,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial();case _:
+return initial(_that.file,_that.isLoading,_that.isCompleted,_that.error);case _:
   return orElse();
 
 }
@@ -404,10 +476,10 @@ return initial();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( File? file,  bool isLoading,  bool isCompleted,  String? error)  initial,}) {final _that = this;
 switch (_that) {
 case _Initial():
-return initial();case _:
+return initial(_that.file,_that.isLoading,_that.isCompleted,_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -424,10 +496,10 @@ return initial();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( File? file,  bool isLoading,  bool isCompleted,  String? error)?  initial,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial();case _:
+return initial(_that.file,_that.isLoading,_that.isCompleted,_that.error);case _:
   return null;
 
 }
@@ -439,32 +511,72 @@ return initial();case _:
 
 
 class _Initial implements SplitState {
-  const _Initial();
+  const _Initial({this.file, this.isLoading = false, this.isCompleted = false, this.error});
   
 
+@override final  File? file;
+@override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool isCompleted;
+@override final  String? error;
 
-
+/// Create a copy of SplitState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$InitialCopyWith<_Initial> get copyWith => __$InitialCopyWithImpl<_Initial>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial&&(identical(other.file, file) || other.file == file)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,file,isLoading,isCompleted,error);
 
 @override
 String toString() {
-  return 'SplitState.initial()';
+  return 'SplitState.initial(file: $file, isLoading: $isLoading, isCompleted: $isCompleted, error: $error)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$InitialCopyWith<$Res> implements $SplitStateCopyWith<$Res> {
+  factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) _then) = __$InitialCopyWithImpl;
+@override @useResult
+$Res call({
+ File? file, bool isLoading, bool isCompleted, String? error
+});
 
 
+
+
+}
+/// @nodoc
+class __$InitialCopyWithImpl<$Res>
+    implements _$InitialCopyWith<$Res> {
+  __$InitialCopyWithImpl(this._self, this._then);
+
+  final _Initial _self;
+  final $Res Function(_Initial) _then;
+
+/// Create a copy of SplitState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? file = freezed,Object? isLoading = null,Object? isCompleted = null,Object? error = freezed,}) {
+  return _then(_Initial(
+file: freezed == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as File?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
 
 // dart format on
